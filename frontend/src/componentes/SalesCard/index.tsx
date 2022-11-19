@@ -1,4 +1,5 @@
-import { useState } from "react";
+import axios from "axios";
+import { useDeferredValue, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import NotificationButton from '../NotificationButton';
@@ -11,6 +12,13 @@ function Salescard() {
 
     const [minDate, setMinDate] = useState(min);
     const [maxDate, setMaxDate] = useState(max);
+
+    useEffect(() => {
+        axios.get("https://dsmeta-yudi.herokuapp.com/sales").then(response => {
+            console.log(response.data);
+        });
+    }, []);
+
 
     return (
         <div className="dsmeta-card">
