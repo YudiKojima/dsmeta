@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useDeferredValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import NotificationButton from '../NotificationButton';
@@ -18,11 +18,18 @@ function Salescard() {
     const [sales, setSales] = useState<Sale[]>([]);
 
     useEffect(() => {
-        axios.get(`${BASE_URL}/sales`).then(response => {
-            setSales(response.data.content);
-        });
-    }, []);
 
+        const dmin = minDate.toISOString().slice(0, 10);
+        const dmax = maxDate.toISOString().slice(0, 10);
+
+        console.log(dmin);
+        console.log(dmax);
+
+        axios.get(`${BASE_URL}/sales?mindate=${dmin}&maxDate=${dmax}`)
+            .then(response => {
+                setSales(response.data.content);
+            });
+    }, [minDate, maxDate]);
 
     return (
         <div className="dsmeta-card">
@@ -76,7 +83,8 @@ function Salescard() {
                                     </td>
                                 </tr>
                             )
-                        })}
+                        })
+                        }
                     </tbody>
 
                 </table>
